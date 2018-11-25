@@ -1,6 +1,8 @@
 class CreateBorrowers < ActiveRecord::Migration[5.2]
   def change
     create_table :borrowers do |t|
+      t.references :loan
+      t.references :customer
 
       t.timestamps
     end
