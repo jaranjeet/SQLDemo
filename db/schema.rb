@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_25_100344) do
+ActiveRecord::Schema.define(version: 2018_11_13_092030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,14 +18,19 @@ ActiveRecord::Schema.define(version: 2018_11_25_100344) do
   create_table "accounts", force: :cascade do |t|
     t.integer "account_number"
     t.float "balance"
+    t.bigint "branch_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "branch_id", null: false
+    t.index ["branch_id"], name: "index_accounts_on_branch_id"
   end
 
   create_table "borrowers", force: :cascade do |t|
+    t.bigint "loan_id"
+    t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_borrowers_on_customer_id"
+    t.index ["loan_id"], name: "index_borrowers_on_loan_id"
   end
 
   create_table "branches", force: :cascade do |t|
@@ -45,15 +50,21 @@ ActiveRecord::Schema.define(version: 2018_11_25_100344) do
   end
 
   create_table "depositors", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_depositors_on_account_id"
+    t.index ["customer_id"], name: "index_depositors_on_customer_id"
   end
 
   create_table "loans", force: :cascade do |t|
     t.integer "loan_number"
     t.float "amount"
+    t.bigint "branch_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["branch_id"], name: "index_loans_on_branch_id"
   end
 
 end
